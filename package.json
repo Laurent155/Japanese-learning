@@ -1,0 +1,36 @@
+{
+  "name": "japanese-learning",
+  "version": "1.0.0",
+  "description": "A site to help practice hiragana/ katakana and more",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "set DEBUG=app & nodemon app.js",
+    "debug": "set DEBUG=* & node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Laurent155/Japanese-learning.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Laurent155/Japanese-learning/issues"
+  },
+  "homepage": "https://github.com/Laurent155/Japanese-learning#readme",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "debug": "^4.3.3",
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15"
+  },
+  "nodemonConfig": {
+    "restartable": "rs",
+    "delay": 2500,
+    "env": {
+      "PORT": 4000
+    }
+  }
+}

@@ -1,0 +1,26 @@
+[
+    {
+        "id":1,
+        "title": "Cauchy's Theorem",
+        "description": "Partial converse to Lagrange's theorem in Groups, prove it",
+        "solution": "See Prelim's Groups"
+    },
+    {
+        "id":2,
+        "title": "3n + 1",
+        "description": "Prove or find a counter example to the 3n + 1 problem",
+        "solution": "I bloody hope there is one"
+    },
+    {
+        "id":3,
+        "title": "952",
+        "description": "Go find that video and tell me what the question was please",
+        "solution": "NINE FIVE TWO"
+    },
+    {
+        "id":4,
+        "title": "2D Random Walk",
+        "description": "You tell me",
+        "solution": "NEE NEE"
+    }
+]
