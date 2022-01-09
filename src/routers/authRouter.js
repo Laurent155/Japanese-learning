@@ -1,6 +1,5 @@
 const express = require('express');
 const { append } = require('express/lib/response');
-const debug = require('debug')('app:authRouter');
 const { MongoClient, ObjectID } = require('mongodb');
 const passport = require('passport');
 require("../config/passport.js")(passport);
@@ -10,8 +9,8 @@ const authRouter = express.Router();
 authRouter.route('/signUp').post((req, res) => {
   const { username, password } = req.body;
   const url =
-    'mongodb+srv://LaurentWu155:xadyDImDKONcEiod@japanese.bd1sg.mongodb.net?retryWrites=true&w=majority';
-  const dbName = 'japanese';
+    'mongodb+srv://BigLuke:PrinceOfMauritius7@jplearning.ciime.mongodb.net?retryWrites=true&w=majority';
+  const dbName = 'userInfo';
 
   (async function addUser() {
     let client;
@@ -20,13 +19,12 @@ authRouter.route('/signUp').post((req, res) => {
 
       const db = client.db(dbName);
       const user = { username, password };
-      const results = await db.collection('japanese').insertOne(user);
-      debug(results);
+      const results = await db.collection('userInfo').insertOne(user);
       req.login(results.ops[0], () => {
-        res.redirect('/auth/profile');
+        res.redirect('../auth/profile');
       });
     } catch (error) {
-      debug(error);
+      console.log(error);
     }
     client.close();
   })();
@@ -39,8 +37,8 @@ authRouter
   })
   .post(
     passport.authenticate('local', {
-      successRedirect: '/auth/profile',
-      failureRedirect: '/',
+      successRedirect: '../auth/profile',
+      failureRedirect: '../',
     })
   );
   authRouter.route('/profile').get((req, res) => {

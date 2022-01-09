@@ -1,0 +1,42 @@
+/*
+    Css used on the practice page only.
+*/
+
+#selectionContainer {
+    display: flex;
+}
+
+.optionBox {
+    flex: 0 1 auto;
+}
+
+.practiceButton {
+    color: #FFFFFF;
+    background: #BC002D;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#practiceBox {
+    width: 200px;
+}
+
+#problemDisplay {
+    font-size: 50px;
+    margin: 10px;
+}
+
+#answerDisplay {
+    font-size: 30px;
+}
+
+#inputBar {
+    margin: 10px 0;
+}
+
+#inputBar:focus {
+    outline: none;
+    border: 1px solid #BC002D;
+    box-shadow: 0 0 5px #BC002D;
+}

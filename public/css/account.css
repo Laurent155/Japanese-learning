@@ -1,0 +1,11 @@
+/*
+    Css used on the account page only.
+*/
+
+main {
+    display: flex;
+}
+
+.accountForm {
+    flex: 0 1 auto;
+}
