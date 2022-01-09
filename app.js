@@ -9,7 +9,7 @@ const session = require('express-session');
 const PORT = process.env.PORT || 3000;
 const app = express();
 const practiceRouter = require('./src/routers/practiceRouter');
-const calenderRouter = require('./src/routers/calenderRouter');
+const calendarRouter = require('./src/routers/calendarRouter');
 const accountRouter = require('./src/routers/accountRouter');
 const authRouter = require('./src/routers/authRouter');
 
@@ -26,7 +26,7 @@ app.set('views', './views');
 app.set('view engine', 'ejs');
 
 app.use('/practice', practiceRouter);
-app.use('/calender', calenderRouter);
+app.use('/calendar', calendarRouter);
 app.use('/account', accountRouter);
 app.use('/auth', authRouter);
 

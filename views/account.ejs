@@ -2,29 +2,33 @@
 <html>
 <head>
 	<title>Japanese Learning</title>
-	<link rel="stylesheet" href="css/base.css"/>
-	<link rel="stylesheet" href="css/account.css"/>
-	<meta charset="UTF-8"/>
+	<link rel="stylesheet" href="css/base.css">
+	<link rel="stylesheet" href="css/account.css">
+	<meta charset="UTF-8">
 </head>
 <body>
 	<header>
 		<nav>
 			<a id="HomeButton" href="/">Japanese Learning</a>
 			<a href="practice">Practice</a>
-			<a href="calender">Calender</a>
+			<a href="calendar">Calendar</a>
 			<a href="account">Account</a>
 		</nav>
 	</header>
 	<main>
-		<form class="accountForm containerBox" name="signup" action="/auth/signIn" method="post">
-			username: <input name="username" id="username" style="color: black;" /><br/>
-			password: <input type="password" name="password" id="password" style="color: black;" /><br/><br/>
-			<input type="submit" value="SIGN IN" class="btn btn-primary btn-lg"></input>
+		<form class="containerBox" name="signup" action="/auth/signIn" method="post" autocomplete="off">
+			<label for="username">Username:</label> 
+			<input name="username" id="username" class="inputBar"><br>
+			<label for="password">Password:</label>
+			<input type="password" name="password" id="password" class="inputBar"><br><br>
+			<input type="submit" value="Sign in" class="button">
 		</form>
-		<form class="accountForm containerBox" name="signup" action="/auth/signUp" method="post">
-			username: <input name="username" id="username" style="color: black;"/><br/>
-			password: <input type="password" name="password" id="password" style="color: black;"/><br/><br/>
-			<input type="submit" value="SIGN UP" class="btn btn-primary btn-lg"></input>
+		<form class="containerBox" name="signup" action="/auth/signUp" method="post" autocomplete="off">
+			<label for="username">Username:</label> 
+			<input name="username" id="username" class="inputBar"><br>
+			<label for="password">Password:</label>
+			<input type="password" name="password" id="password" class="inputBar"><br><br>
+			<input type="submit" value="Sign up" class="button">
 		</form>
 	</main>
 </body>
