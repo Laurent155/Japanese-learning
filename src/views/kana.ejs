@@ -108,16 +108,21 @@
     <section class="sec_include">
       <div class="container">
         <br><br><br><br><br>
-
-        
         <div style="text-align:center">
-          <button type="button", onclick="initialize()">START</button>
-          <font size = +5, id="hiragana">yo</font>
+          
+          <font size = +5, id="hiragana"></font>
+          <script>
+            let counter = 0;
+            let correct = 0;
+            let wrong = 0;
+            let wrong_list = [];
+          </script>
+          
           <br><br><br>
-            <input type="text" onkeydown="check(this)">
-            <p id="correctness">PRESS ENTER</p>
-            <button type="button", onclick="unpause()">CONTINUE</button>
-
+          <input type="text" onkeydown="check(this)", id="textbar">
+          <p id="correctness">LET'S GO!</p> 
+          <br><br>
+          
         </div>
         <br>
       </div>
@@ -140,40 +145,245 @@
 
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
+  
   <script>
-    let response = "";
-    let answer = "";
-    let pause = True;
-    const hiragana = require('../data/hiragana.json');
+  
+  function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+  let hira = [
+    {
+        "character": "あ",
+        "romaji": "a"
+    },
+    {
+        "character": "い",
+        "romaji": "i"
+    },
+    {
+        "character": "う",
+        "romaji": "u"
+    },
+    {
+        "character": "え",
+        "romaji": "e"
+    },
+    {
+        "character": "お",
+        "romaji": "o"
+    },
+    {
+        "character": "か",
+        "romaji": "ka"
+    },
+    {
+        "character": "き",
+        "romaji": "ki"
+    },
+    {
+        "character": "く",
+        "romaji": "ku"
+    },
+    {
+        "character": "け",
+        "romaji": "ke"
+    },
+    {
+        "character": "こ",
+        "romaji": "ko"
+    },
+    {
+        "character": "さ",
+        "romaji": "sa"
+    },
+    {
+        "character": "し",
+        "romaji": "shi"
+    },
+    {
+        "character": "す",
+        "romaji": "su"
+    },
+    {
+        "character": "せ",
+        "romaji": "se"
+    },
+    {
+        "character": "そ",
+        "romaji": "so"
+    },
+    {
+        "character": "た",
+        "romaji": "ta"
+    },
+    {
+        "character": "ち",
+        "romaji": "chi"
+    },
+    {
+        "character": "つ",
+        "romaji": "tsu"
+    },
+    {
+        "character": "て",
+        "romaji": "te"
+    },
+    {
+        "character": "と",
+        "romaji": "to"
+    },
+    {
+        "character": "な",
+        "romaji": "na"
+    },
+    {
+        "character": "に",
+        "romaji": "ni"
+    },
+    {
+        "character": "ぬ",
+        "romaji": "nu"
+    },
+    {
+        "character": "ね",
+        "romaji": "ne"
+    },
+    {
+        "character": "の",
+        "romaji": "no"
+    },
+    {
+        "character": "は",
+        "romaji": "ha"
+    },
+    {
+        "character": "ひ",
+        "romaji": "hi"
+    },
+    {
+        "character": "ふ",
+        "romaji": "fu"
+    },
+    {
+        "character": "へ",
+        "romaji": "he"
+    },
+    {
+        "character": "ほ",
+        "romaji": "ho"
+    },
+    {
+        "character": "ま",
+        "romaji": "ma"
+    },
+    {
+        "character": "み",
+        "romaji": "mi"
+    },
+    {
+        "character": "む",
+        "romaji": "mu"
+    },
+    {
+        "character": "め",
+        "romaji": "me"
+    },
+    {
+        "character": "も",
+        "romaji": "mo"
+    },
+    {
+        "character": "や",
+        "romaji": "ya"
+    },
+    {
+        "character": "ゆ",
+        "romaji": "yu"
+    },
+    {
+        "character": "よ",
+        "romaji": "yo"
+    },
+    {
+        "character": "ら",
+        "romaji": "ra"
+    },
+    {
+        "character": "り",
+        "romaji": "ri"
+    },
+    {
+        "character": "る",
+        "romaji": "ru"
+    },
+    {
+        "character": "れ",
+        "romaji": "re"
+    },
+    {
+        "character": "ろ",
+        "romaji": "ro"
+    },
+    {
+        "character": "わ",
+        "romaji": "wa"
+    },
+    {
+        "character": "を",
+        "romaji": "wo"
+    },
+    {
+        "character": "ん",
+        "romaji": "n"
+    }
     
-    function initialize(){
-      let hiragana0 = hiragana;
-      alert(hiragana0.length);
-        for(let i=0; i < hiragana0.length;i++){
-            document.getElementById("hiragana").innerHTML = hiragana0[i].character;
-            answer = hiragana0[i].romaji;
-
-            while(pause = True){
-                let a = 2;
-            }
-            pause = True;
+];
+  
+hira = shuffle(hira);
+document.getElementById("hiragana").innerHTML = hira[0].character;
+    function check(input, array){
+      
+      if(event.key === 'Enter'){
+        if(input.value == hira[counter].romaji){
+            document.getElementById("correctness").innerHTML = "Correct!";
+            correct += 1;
+        } else {
+            document.getElementById("correctness").innerHTML = "WRONG! it's "+hira[counter].romaji;
+            wrong += 1;
+            wrong_list.push(hira[counter]);
         }
-    }
-
-    function check(input){
-        if(event.key === 'Enter'){
-            response = input.value;
-            if(response == answer){
-                document.getElementById("correctness").innerHTML = "Correct!";
-            } else {
-                document.getElementById("correctness").innerHTML = "WRONG";
-            }
+        if(counter == hira.length - 1 && wrong_list.length > 0){
+          alert("You got " + correct + " out of "+ hira.length +" right!");
+          document.getElementById("correctness").innerHTML = "";
+          hira = shuffle(wrong_list);
+          wrong_list = [];
+          counter = -1;
+          correct = 0;
+          wrong = 0;
         }
+        if(counter == hira.length - 1 && wrong_list.length == 0){
+          document.getElementById("hiragana").innerHTML = "Congratulations on finishing your daily KANA practice!";
+        }
+        counter += 1;
+        document.getElementById("hiragana").innerHTML = hira[counter].character;
+        document.getElementById("textbar").value = null;
+      }
     }
 
-    function unpause(){
-        pause = False;
-    }
 </script>
 
 </body>
