@@ -1,2 +1,2 @@
 # Japanese-learning
-A site to help practice hiragana/ katakana and more
+A site to help practice hiragana/katakana and more

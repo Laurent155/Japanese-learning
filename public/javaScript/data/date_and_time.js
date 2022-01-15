@@ -1,4 +1,4 @@
-const date_and_time = [
+var date_and_time = [
     {
         character: "百",
         romaji: ["hyaku"]
@@ -253,7 +253,7 @@ const date_and_time = [
     },
     {
         character: "九月",
-        romaji: ["kyuugatsu"]
+        romaji: ["kugatsu"]
     },
     {
         character: "十月",

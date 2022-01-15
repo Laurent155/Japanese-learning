@@ -1,4 +1,4 @@
-﻿const katakana = [
+﻿var katakana = [
     {
         character: "ア",
         romaji: ["a"]

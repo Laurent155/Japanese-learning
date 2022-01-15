@@ -1,4 +1,4 @@
-﻿const hiragana = [
+﻿var hiragana = [
     {
         character: "あ",
         romaji: ["a"]

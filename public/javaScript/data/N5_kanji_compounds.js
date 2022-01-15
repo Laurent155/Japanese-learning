@@ -1,4 +1,8 @@
-﻿const N5_kanji_compounds = [
+﻿var N5_kanji_compounds = [
+    {
+        character: "一日",
+        romaji: ["ichinichi"]
+    },
     {
         character: "休日",
         romaji: ["kyuujitsu"]

@@ -2,17 +2,13 @@
     Css used on the practice page only.
 */
 
-#selectionContainer {
+#practiceContainer {
     display: flex;
     flex-wrap: wrap;
 }
 
 .optionBox {
     flex: 0 1 auto;
-}
-
-#practiceContainer {
-    display: flex;
 }
 
 #practiceBox {
