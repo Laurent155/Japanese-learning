@@ -1,6 +1,8 @@
 const passport = require('passport');
 const { Strategy } = require('passport-local');
 const { MongoClient } = require('mongodb');
+const dotenv = require('dotenv');
+dotenv.config()
 
 module.exports = function localStrategy() {
   passport.use(
@@ -10,8 +12,7 @@ module.exports = function localStrategy() {
         passwordField: 'password',
       },
       (username, password, done) => {
-        const url =
-          'mongodb+srv://BigLuke:PrinceOfMauritius7@jplearning.ciime.mongodb.net?retryWrites=true&w=majority';
+        const url = 'mongodb+srv://BigLuke:PrinceOfMauritius7@jplearning.ciime.mongodb.net?retryWrites=true&w=majority';
         const dbName = 'userInfo';
         (async function validateUser() {
           let client;

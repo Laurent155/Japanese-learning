@@ -8,6 +8,7 @@ let initialRun = true;
 let initialCorrect = 0;
 let cycleNumber = 1;
 
+
 let practiceOptions = [
 	"hiragana",
 	"katakana",
@@ -15,7 +16,8 @@ let practiceOptions = [
 	"N5_kanji_compounds",
 	"date_and_time",
 	"N4_kanji_kun_1",
-	"N4_kanji_kun_2"
+	"N4_kanji_kun_2",
+	"test"
 ];
 
 let baseProblems = [];
@@ -98,6 +100,9 @@ function nextProblem() {
 			<p>It took you ${cycleNumber} try(s) to answer every problem.</p>
 			<button class="redButton" onclick="loadOptions()">Try another</button>
 		`;
+		fetch('http://localhost:4000/calendar', {method:'POST'}).then(()=>{
+			console.log('thank you!');
+		})
     }
 }
 
@@ -115,3 +120,4 @@ function checkAnswer(answer) {
 		answered = true;
     }
 }
+

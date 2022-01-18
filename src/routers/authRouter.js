@@ -1,15 +1,18 @@
 const express = require('express');
 const { append } = require('express/lib/response');
 const { MongoClient, ObjectID } = require('mongodb');
+const { session } = require('passport');
 const passport = require('passport');
 require("../config/passport.js")(passport);
 const authRouter = express.Router();
-
+const dotenv = require('dotenv');
+dotenv.config()
+const calendar = [false, false, false, false, false, false, false];
 
 authRouter.route('/signUp').post((req, res) => {
+  
   const { username, password } = req.body;
-  const url =
-    'mongodb+srv://BigLuke:PrinceOfMauritius7@jplearning.ciime.mongodb.net?retryWrites=true&w=majority';
+  const url = 'mongodb+srv://BigLuke:PrinceOfMauritius7@jplearning.ciime.mongodb.net?retryWrites=true&w=majority';
   const dbName = 'userInfo';
 
   (async function addUser() {
@@ -18,7 +21,7 @@ authRouter.route('/signUp').post((req, res) => {
       client = await MongoClient.connect(url);
 
       const db = client.db(dbName);
-      const user = { username, password };
+      const user = { username, password, calendar };
       const results = await db.collection('userInfo').insertOne(user);
       req.login(results.ops[0], () => {
         res.redirect('../auth/profile');
@@ -28,6 +31,7 @@ authRouter.route('/signUp').post((req, res) => {
     }
     client.close();
   })();
+  
 });
 
 authRouter
@@ -45,4 +49,6 @@ authRouter
     res.json(req.user);
   });
 
+  
+  
 module.exports = authRouter;

@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const passport = require('passport');
 require("./src/config/passport.js")(passport);
+const schedule = require('node-schedule');
+const dotenv = require('dotenv');
+dotenv.config()
 
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -9,10 +12,10 @@ const session = require('express-session');
 const PORT = process.env.PORT || 3000;
 const app = express();
 const practiceRouter = require('./src/routers/practiceRouter');
-const calendarRouter = require('./src/routers/calendarRouter');
+const { calendarRouter, updateCalendar } = require('./src/routers/calendarRouter'); 
+//it's because I've exported an object { ... }, so now only want one function in it, so want the {} around authRouter.
 const accountRouter = require('./src/routers/accountRouter');
-const authRouter = require('./src/routers/authRouter');
-
+const authRouter = require('./src/routers/authRouter');   
 app.use(express.static(path.join(__dirname, '/public/')));
 
 app.use(express.json());
@@ -37,3 +40,4 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`listening to ${PORT}`);
 })
+schedule.scheduleJob('0 0 * * *', () => {updateCalendar()});
