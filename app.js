@@ -38,4 +38,5 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`listening to ${PORT}`);
 })
+
 schedule.scheduleJob('0 0 * * *', () => {updateCalendar()});
