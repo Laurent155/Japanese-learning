@@ -1,0 +1,11 @@
+/*
+    Css used on the calendar page only.
+*/
+
+#calendarContainer {
+    display: flex;
+}
+
+.dayBox {
+    flex: 0 1 auto;
+}

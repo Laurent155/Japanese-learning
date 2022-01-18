@@ -12,7 +12,11 @@ dotenv.config()
 // in a post request, you can send data to backend from frontend (website), if want to call another function or do another thing, create another endpoint.
 
 calendarRouter.route('/').get((req, res) => {
-    res.render('calendar');
+    if (!req.user){
+      res.render('calendar');
+  } else {
+      res.render('userCalendar');
+  }
 }).post((req, res) => {
   console.log(req.user);
   updatePersonalCalendar(req.user.username);
