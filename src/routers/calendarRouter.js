@@ -23,7 +23,12 @@ calendarRouter.route('/').get((req, res) => {
   res.send('received');
 })
 
-const url = 'mongodb+srv://BigLuke:PrinceOfMauritius7@jplearning.ciime.mongodb.net?retryWrites=true&w=majority';
+calendarRouter.route('/getData').post((req, res) => {
+  //let pCalendar = await retrievePersonalCalendar(req.user.username);
+  res.send(req.user.calendar);
+})
+
+const url = process.env.databaseURL;
 const client = new MongoClient(url);
 async function updateCalendar() {
   try {
@@ -75,17 +80,34 @@ async function updatePersonalCalendar(learnerName) {
         $push: {
             calendar: true
         },
-      };
-      const result1 = await userInfo.updateOne(filter, removeDate, options);
-      const result2 = await userInfo.updateOne(filter, addDate, options);
-      console.log(
-        `${result1.matchedCount} document(s) matched the filter, updated ${result1.modifiedCount} document(s)`,
-      );
-      console.log(
-        `${result2.matchedCount} document(s) matched the filter, updated ${result2.modifiedCount} document(s)`,
-      );
+    };
+    const result1 = await userInfo.updateOne(filter, removeDate, options);
+    const result2 = await userInfo.updateOne(filter, addDate, options);
+    console.log(
+      `${result1.matchedCount} document(s) matched the filter, updated ${result1.modifiedCount} document(s)`,
+    );
+    console.log(
+      `${result2.matchedCount} document(s) matched the filter, updated ${result2.modifiedCount} document(s)`,
+    );
   } finally {
     await client.close();
   }
 }
+
+// async function retrievePersonalCalendar(learnerName) {
+//   let personalCalendar = [];
+//   try {
+//     await client.connect();
+//     const database = client.db("userInfo");
+//     const userInfo = database.collection("userInfo");
+//     const query = {username: learnerName};
+
+//     const result = await userInfo.findOne(query);
+//     personalCalendar = result.calendar;
+//   } finally {
+//     await client.close();
+//   }
+//   return personalCalendar;
+// }
+
 module.exports = { calendarRouter, updateCalendar, updatePersonalCalendar };

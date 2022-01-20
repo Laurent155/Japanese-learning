@@ -8,8 +8,7 @@ let initialRun = true;
 let initialCorrect = 0;
 let cycleNumber = 1;
 
-
-let practiceOptions = [
+const practiceOptions = [
 	"hiragana",
 	"katakana",
 	"N5_kanji_kun",

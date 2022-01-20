@@ -2,10 +2,12 @@
     Css used on the calendar page only.
 */
 
-#calendarContainer {
-    display: flex;
+.dayBoxRed {
+    flex: 0 1 auto;
+    background: red;
 }
 
-.dayBox {
+.dayBoxGreen {
     flex: 0 1 auto;
+    background: green;
 }

@@ -3,7 +3,6 @@
 */
 
 #practiceContainer {
-    display: flex;
     flex-wrap: wrap;
 }
 

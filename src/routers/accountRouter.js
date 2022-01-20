@@ -21,7 +21,7 @@ accountRouter.route('/').get((req, res) => {
 accountRouter.route('/signUp').post((req, res) => {
   
   const { username, password } = req.body;
-  const url = 'mongodb+srv://BigLuke:PrinceOfMauritius7@jplearning.ciime.mongodb.net?retryWrites=true&w=majority';
+  const url = process.env.databaseURL;
   const dbName = 'userInfo';
 
   (async function addUser() {
@@ -46,7 +46,7 @@ accountRouter.route('/signUp').post((req, res) => {
 accountRouter
   .route('/signIn')
   .get((req, res) => {
-    res.render('signin');
+    res.render(req.user);
   })
   .post(
     passport.authenticate('local', {
