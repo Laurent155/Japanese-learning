@@ -4,8 +4,7 @@ const passport = require('passport');
 require("./src/config/passport.js")(passport);
 const schedule = require('node-schedule');
 const dotenv = require('dotenv');
-dotenv.config()
-
+dotenv.config();
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 

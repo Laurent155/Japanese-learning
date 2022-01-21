@@ -6,10 +6,11 @@ const passport = require('passport');
 require("../config/passport.js")(passport);
 const accountRouter = express.Router();
 const dotenv = require('dotenv');
-dotenv.config()
+
 const calendar = [false, false, false, false, false, false, false];
 
 accountRouter.route('/').get((req, res) => {
+    console.log(req.user);
     if (!req.user){
         res.render('account');
     } else {
@@ -38,7 +39,7 @@ accountRouter.route('/signUp').post((req, res) => {
     } catch (error) {
       console.log(error);
     }
-    client.close();
+    //client.close();
   })();
   
 });
@@ -54,5 +55,12 @@ accountRouter
       failureRedirect: '../',
     })
   );
+accountRouter.route('/signOut').get((req, res) => {
+  req.logOut();
+  // passport.deserializeUser((req.user, (error)=>{
+  //   console.log(error);
+  // }))
+  res.redirect('/');
+})
 
 module.exports = accountRouter;

@@ -5,7 +5,6 @@ const passport = require('passport');
 require("../config/passport.js")(passport);
 const calendarRouter = express.Router();
 const dotenv = require('dotenv');
-dotenv.config()
 
 // the route method: it's setting an endpoint to be called through 'GET', 'POST' requests.
 // .get is to handle all get requests, similarly for .post, to handle/ differentiate between post requests, assign different routes.
@@ -17,15 +16,18 @@ calendarRouter.route('/').get((req, res) => {
   } else {
       res.render('userCalendar');
   }
-}).post((req, res) => {
-  console.log(req.user);
-  updatePersonalCalendar(req.user.username);
-  res.send('received');
+}).post(async (req, res) => {
+  if (!req.user){
+    res.send('There is no user!');        // res.resdirect vs res.render
+} else {
+    await updatePersonalCalendar(req.user.username);
+    res.send('received');
+}
 })
 
-calendarRouter.route('/getData').post((req, res) => {
-  //let pCalendar = await retrievePersonalCalendar(req.user.username);
-  res.send(req.user.calendar);
+calendarRouter.route('/getData').get(async (req, res) => {
+  let pCalendar = await retrievePersonalCalendar(req.user.username);
+  res.send(pCalendar);
 })
 
 const url = process.env.databaseURL;
@@ -58,12 +60,12 @@ async function updateCalendar() {
       `${result2.matchedCount} document(s) matched the filter, updated ${result2.modifiedCount} document(s)`,
     );
   } finally {
-    await client.close();
+    //await client.close();
   }
 }
 // bracket pair colorizer !!!!
 async function updatePersonalCalendar(learnerName) {
-  try {
+  try {  
     await client.connect();
     const database = client.db("userInfo");
     const userInfo = database.collection("userInfo");
@@ -89,25 +91,26 @@ async function updatePersonalCalendar(learnerName) {
     console.log(
       `${result2.matchedCount} document(s) matched the filter, updated ${result2.modifiedCount} document(s)`,
     );
-  } finally {
-    await client.close();
+  } catch(error) {
+    console.log(error);
+    //await client.close();
   }
 }
 
-// async function retrievePersonalCalendar(learnerName) {
-//   let personalCalendar = [];
-//   try {
-//     await client.connect();
-//     const database = client.db("userInfo");
-//     const userInfo = database.collection("userInfo");
-//     const query = {username: learnerName};
+async function retrievePersonalCalendar(learnerName) {
+  let personalCalendar = [];
+  try {
+    await client.connect();
+    const database = client.db("userInfo");
+    const userInfo = database.collection("userInfo");
+    const query = {username: learnerName};
 
-//     const result = await userInfo.findOne(query);
-//     personalCalendar = result.calendar;
-//   } finally {
-//     await client.close();
-//   }
-//   return personalCalendar;
-// }
+    const result = await userInfo.findOne(query);
+    personalCalendar = result.calendar;
+  } finally {
+    //await client.close();
+  }
+  return personalCalendar;
+}
 
 module.exports = { calendarRouter, updateCalendar, updatePersonalCalendar };
