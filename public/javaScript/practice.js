@@ -16,6 +16,9 @@ const practiceOptions = [
 	"date_and_time",
 	"N4_kanji_kun_1",
 	"N4_kanji_kun_2",
+	"N3_kanji_kun_1",
+	"N3_kanji_kun_2",
+	"N3_kanji_kun_3",
 	"test"
 ];
 
