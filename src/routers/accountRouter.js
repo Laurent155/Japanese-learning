@@ -10,7 +10,6 @@ const dotenv = require('dotenv');
 const calendar = [false, false, false, false, false, false, false];
 
 accountRouter.route('/').get((req, res) => {
-    console.log(req.user);
     if (!req.user){
         res.render('account');
     } else {
@@ -20,7 +19,6 @@ accountRouter.route('/').get((req, res) => {
 });
 
 accountRouter.route('/signUp').post((req, res) => {
-  
   const { username, password } = req.body;
   const url = process.env.databaseURL;
   const dbName = 'userInfo';
@@ -55,6 +53,7 @@ accountRouter
       failureRedirect: '../',
     })
   );
+
 accountRouter.route('/signOut').get((req, res) => {
   req.logOut();
   // passport.deserializeUser((req.user, (error)=>{
