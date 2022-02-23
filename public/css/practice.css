@@ -8,6 +8,7 @@
 
 .optionBox {
     flex: 0 1 auto;
+    margin-bottom: 15px;
 }
 
 #practiceBox {
