@@ -31,7 +31,7 @@ app.use('/calendar', calendarRouter);
 app.use('/account', accountRouter);
 
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('write');
 });
 
 app.listen(PORT, () => {

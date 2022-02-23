@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<script src=
+	"https://code.jquery.com/jquery-2.2.4.min.js">
+	</script>
+	<script src=
+	"https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.5.2/dist/tf.min.js">
+	</script>
+	
+	<link rel="stylesheet" href="css/write.css" />
+</head>
+
+<body>
+	<h1>Hiragana Recognition</h1>
+
+	<div id="paint">
+		<canvas id="myCanvas" width="200" height="200"></canvas>
+	</div>
+
+	<div class="center">
+		<button id="send" class="button" onclick="processImage()">Send</button>
+	</div>
+
+	<div id="predicted">
+		Recognized hiragana:
+		<div id="predicted"></div>
+		<button id="clear" class="button">Clear</button>
+	</div>
+	<script src="javaScript/write.js"></script>
+</body>
+
+</html>

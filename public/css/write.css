@@ -1,0 +1,38 @@
+body {
+	touch-action: none;
+	font-family: "Roboto";
+}
+h1 {
+	margin: 50px;
+	font-size: 70px;
+	text-align: center;
+}
+#paint {
+	border:3px solid red;
+    height: 200px;
+    width: 200px;
+	margin: auto;
+}
+#predicted {
+	font-size: 60px;
+	margin-top: 60px;
+	text-align: center;
+}
+#number {
+	border: 3px solid black;
+	margin: auto;
+	margin-top: 30px;
+	text-align: center;
+	vertical-align: middle;
+    height: 200px;
+    width: 200px;
+}
+.button {
+	margin: auto;
+	padding: 30px;
+	text-align: center;
+}
+.center {
+	text-align: center;
+	margin-top: 10px;
+}
