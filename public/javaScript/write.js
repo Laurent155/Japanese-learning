@@ -1,16 +1,3 @@
-// canvas = document.getElementById('myCanvas');
-// context = canvas.getContext("2d");
-// canvas.addEventListener('mousedown', function (e) {
-// 	console.log(e);
-//     context.beginPath();
-// 	context.moveTo(e.offsetX, e.offsetY);
-// 	canvas.addEventListener('mousemove', ()=>{onPaint(e)}, false);
-// }, false); 
-// var onPaint = function (e) {
-// 	console.log($);
-// 	context.lineTo(e.offsetX, e.offsetY);
-// 	context.stroke();
-// };
 const hiragana = ["あ",
 "い",
 "う",
@@ -86,10 +73,6 @@ const paintCanvas = document.getElementById( 'myCanvas' );
 const context = paintCanvas.getContext( '2d' );
 context.lineCap = 'round';
 context.lineWidth = 5;
-// context.fillStyle = 'black';
-// context.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
-// context.strokeStyle = 'white';
-
 
 let x = 0, y = 0;
 let isMouseDown = false;
@@ -129,6 +112,9 @@ const processImage = ()=>{
     img.onload = function () {
         context.drawImage(img, 0, 0, 48, 48);
         data = context.getImageData(0, 0, 48, 48).data;
+        context.clearRect(0, 0, 48, 48);
+        // context.fillStyle = 'white';
+        // context.fillRect(0, 0, 48, 48);
         console.log(data);
         var input = [];
         for (var i = 0; i < data.length; i += 4) {
@@ -138,28 +124,16 @@ const processImage = ()=>{
     };
 }
 
-Array.prototype.reshape = function(rows, cols) {
-    var copy = this.slice(0); // Copy all elements.
-    this.length = 0; // Clear out existing array.
-  
-    for (var r = 0; r < rows; r++) {
-      var row = [];
-      for (var c = 0; c < cols; c++) {
-        var i = r * cols + c;
-        if (i < copy.length) {
-          row.push(copy[i]);
-        }
-      }
-      this.push(row);
-    }
-  };
+const clearCanvas = ()=>{
+    context.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
+}
 
 tf.loadLayersModel('./model/model.json')
     .then(function (model) {
         window.model = model;
         console.log(model);
     });
-// const model = await tf.loadLayersModel('./model/model.json').then(function (model) {window.model = model});
+
 // Predict function
 var predict = function (input) {
     if (window.model) {
@@ -170,7 +144,7 @@ var predict = function (input) {
                 console.log(scores);
                 predicted = scores
                     .indexOf(Math.max(...scores));
-                $('#predicted').html(hiragana[predicted]);
+                $('#result').html(hiragana[predicted]);
             });  
     } else {
   
