@@ -21,6 +21,18 @@
     margin: 10px;
 }
 
+#drawnDisplay {
+    font-size : 25px;
+}
+
 #answerDisplay {
     font-size: 30px;
+}
+
+#canvasDisplay {
+    border:3px solid #BC002D;
+    height: 206px;
+    width: 206px;
+	margin: auto;
+    margin-bottom: 20px;
 }

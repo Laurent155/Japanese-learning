@@ -5,6 +5,12 @@
 		<link rel="stylesheet" href="css/base.css">
 		<link rel="stylesheet" href="css/practice.css">
 		<meta charset="UTF-8">
+		<script src=
+		"https://code.jquery.com/jquery-2.2.4.min.js">
+		</script>
+		<script src=
+		"https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.5.2/dist/tf.min.js">
+		</script>
 	</head>
 	<body>
 		<header>
@@ -16,8 +22,19 @@
 			</nav>
 		</header>
 		<main>
-			<div id="practiceContainer" class="mainContainer"></div>
+			<div id="practiceContainer" class="mainContainer">
+				<div class="optionBox containerBox">
+					<h1>Reading practice</h1>
+					<button class="redButton" onclick="loadOptions(readingPracticeOptions)">Select</button>
+				</div>
+				<div class="optionBox containerBox">
+					<h1>Writing practice</h1>
+					<button class="redButton" onclick="loadOptions(writingPracticeOptions)">Select</button>
+				</div>
+			</div>
 		</main>
+		<canvas id="tempCanvas"></canvas>
 		<script src="javaScript/practice.js"></script>
+		<script src="javaScript/write.js"></script>
 	</body>
 </html>

@@ -8,4 +8,8 @@ practiceRouter.route('/').get((req, res) => {
   res.render('practice');
 });
 
+practiceRouter.route('/write').get((req, res) => {
+  res.render('write');
+});
+
 module.exports = practiceRouter;

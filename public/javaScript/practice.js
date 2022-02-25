@@ -8,7 +8,7 @@ let initialRun = true;
 let initialCorrect = 0;
 let cycleNumber = 1;
 
-const practiceOptions = [
+const readingPracticeOptions = [
 	"hiragana",
 	"katakana",
 	"N5_kanji_kun",
@@ -22,6 +22,12 @@ const practiceOptions = [
 	"test"
 ];
 
+const writingPracticeOptions = [
+	"hiragana",
+	"test"
+];
+
+let currentOptions = [];
 let baseProblems = [];
 let wrongAnswers = [];
 let currentProblem = {
@@ -29,7 +35,8 @@ let currentProblem = {
 	romaji : ["a"]
 };
 
-function loadOptions() {
+function loadOptions(practiceOptions) {
+	currentOptions = practiceOptions;
 	document.getElementById("practiceContainer").innerHTML = "";
 	practiceOptions.forEach(function (option) {
 		let newOption = document.createElement('div');
@@ -45,8 +52,6 @@ function loadOptions() {
 		}
 	})
 }
-
-window.onload = loadOptions();
 
 function startPractice(option) {
 	initialRun = true;
@@ -71,24 +76,33 @@ document.addEventListener("keypress", function (event) {
 });
 
 function loadProblems() {
-	document.getElementById("practiceBox").innerHTML = `
-		<h1 id="problemDisplay"></h1>
-		<div id="answerDisplay"></div>
-		<div id="inputField"><input class="inputBar" type="text" onkeydown="checkAnswer(this)"></div>
-	`;
+	if(currentOptions == readingPracticeOptions) {
+		document.getElementById("practiceBox").innerHTML = `
+			<h1 id="problemDisplay"></h1>
+			<div id="answerDisplay"></div>
+			<div id="inputField"></div>
+		`;
+	} else {
+		document.getElementById("practiceBox").innerHTML = `
+			<h1 id="problemDisplay"></h1>
+			<div id="canvasDisplay"><canvas id="myCanvas" width="200px" height="200px"></canvas></div>
+			<div id="drawnDisplay"></div>
+			<div id="answerDisplay"></div>
+			<div id="inputField"></div>
+		`;
+		resetCanvas();
+	}
+
 	nextProblem();
 }
 
 function nextProblem() {
 	if (baseProblems.length > 0) {
-		r = Math.floor(Math.random() * baseProblems.length);
-		currentProblem = baseProblems[r];
-		baseProblems.splice(r, 1);
-		document.getElementById("answerDisplay").innerHTML = '';
-		document.getElementById("problemDisplay").innerHTML = currentProblem.character;
-		document.getElementById("inputField").innerHTML =
-			'<input id="practiceInput" class="inputBar" type="text" onkeydown="checkAnswer(this)">';
-		document.getElementById("practiceInput").select();
+		if(currentOptions == readingPracticeOptions) {
+			loadReadingProblem();
+		} else {
+			loadWritingProblem();
+		}
 	} else if (wrongAnswers.length > 0) {
 		baseProblems = wrongAnswers;
 		wrongAnswers = [];
@@ -100,12 +114,37 @@ function nextProblem() {
 			<h1>Finished!</h1>
 			<p>You answered ${initialCorrect} problems correct first try.</p>
 			<p>It took you ${cycleNumber} try(s) to answer every problem.</p>
-			<button class="redButton" onclick="loadOptions()">Try another</button>
+			<button class="redButton" onclick="loadOptions(currentOptions)">Try another</button>
 		`;
 		fetch('http://localhost:4000/calendar', {method:'POST'}).then(()=>{
 			console.log('thank you!');
 		})
     }
+}
+
+function loadReadingProblem() {
+	r = Math.floor(Math.random() * baseProblems.length);
+	currentProblem = baseProblems[r];
+	baseProblems.splice(r, 1);
+	document.getElementById("answerDisplay").innerHTML = '';
+	document.getElementById("problemDisplay").innerHTML = currentProblem.character;
+	document.getElementById("inputField").innerHTML =
+		'<input id="practiceInput" class="inputBar" type="text" onkeydown="checkAnswer(this)">';
+	document.getElementById("practiceInput").select();
+}
+
+function loadWritingProblem() {
+	r = Math.floor(Math.random() * baseProblems.length);
+	currentProblem = baseProblems[r];
+	baseProblems.splice(r, 1);
+	clearCanvas();
+	document.getElementById("drawnDisplay").innerHTML = '';
+	document.getElementById("answerDisplay").innerHTML = '';
+	document.getElementById("problemDisplay").innerHTML = currentProblem.romaji;
+	document.getElementById("inputField").innerHTML = `
+		<button id="send" class="redButton" onclick="processImage()">Send</button>
+		<button id="clear" class="redButton" onclick="clearCanvas()">Clear</button>
+	`;
 }
 
 function checkAnswer(answer) {
