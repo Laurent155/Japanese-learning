@@ -2,19 +2,27 @@
 <html>
 <head>
 	<title>Japanese Learning</title>
-	<link rel="stylesheet" href="css/base.css">
-	<link rel="stylesheet" href="css/account.css">
+	<link rel="stylesheet" href="/css/base.css">
+	<link rel="stylesheet" href="/css/account.css">
 	<meta charset="UTF-8">
 </head>
 <body>
 	<header>
 		<nav>
 			<a id="HomeButton" href="/">Japanese Learning</a>
-			<a href="practice">Practice</a>
-			<a href="calendar">Calendar</a>
-			<a href="account">Account</a>
+			<a href="/practice">Practice</a>
+			<a href="/calendar">Calendar</a>
+			<a href="/account">Account</a>
 		</nav>
 	</header>
+	<div class="errorMessage">
+		<% if (errorMessage) { %>
+			<div>
+				<strong><%= errorMessage %></strong>
+				<button type="button"></button>
+			</div>
+		<% } %>
+	</div>
 	<main>
 		<form class="containerBox" name="signin" action="/account/signIn" method="post" autocomplete="off">
 			<label for="username">Username:</label> 

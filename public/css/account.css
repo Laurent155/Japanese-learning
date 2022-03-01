@@ -9,3 +9,7 @@ main {
 .accountForm {
     flex: 1 0 auto;
 }
+.errorMessage {
+    text-align: center;
+    color: white;
+}
