@@ -16,17 +16,19 @@ accountRouter.route('/').get((req, res) => {
           errorMessage:''
         });
     } else {
-        res.render('profile');
+        res.render('profile', {
+          username: req.user.username,
+        });
     }
     
 });
 
 accountRouter.route('/signUp').post(async(req, res) => {
-  const { username, password } = req.body;
+  const { email, username, password } = req.body;
   const url = process.env.databaseURL;
   const dbName = 'userInfo';
-  var pattern = /(?=^.{8,}$)(?=.*\d)(?=.*\W+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
-
+  const password_pattern = /(?=^.{8,}$)(?=.*\d)(?=.*\W+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+  const email_pattern = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
  
     let client;
     // if(password.length < 8){
@@ -34,8 +36,12 @@ accountRouter.route('/signUp').post(async(req, res) => {
     //     errorMessage: 'Password should be at least 8 characters long'
     //   })
     // }
-
-    if(!password.match(pattern)){
+    if(!email.match(email_pattern)){
+      return res.render('account', {
+        errorMessage: 'Invalid email address'
+      })
+    }
+    if(!password.match(password_pattern)){
       return res.render('account', {
         errorMessage: 'Password should be at least 8 characters long, should contain at least 1 upper case letter one number, letter and one special character'
       })
@@ -44,7 +50,7 @@ accountRouter.route('/signUp').post(async(req, res) => {
       client = await MongoClient.connect(url);
 
       const db = client.db(dbName);
-      const user = { username, password, calendar };
+      const user = { email, username, password, calendar };
       const existUser = await db.collection('userInfo').find({username}).count();
       if(existUser === 0){
         const results = await db.collection('userInfo').insertOne(user);
