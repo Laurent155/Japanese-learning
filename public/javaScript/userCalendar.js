@@ -21,7 +21,7 @@ async function loadDays() {
         dayList.push(dayList.shift());
         today--;
     }
-    await fetch('http://localhost:4000/calendar/getData', {})
+    await fetch('/calendar/getData', {})
         .then(response => response.json()).then(data => {
             for(i=0; i<7; i++) {
                 dayList[i].dayStatus = data[i];
