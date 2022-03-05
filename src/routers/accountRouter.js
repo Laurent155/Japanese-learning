@@ -90,4 +90,21 @@ accountRouter.route('/signOut').get((req, res) => {
   res.redirect('/');
 })
 
+require('../config/strategies/google.strategy');
+
+accountRouter.route('/google').get((req, res) => {
+  passport.authenticate('google', {
+    scope: ['email', 'profile'],
+  })
+  // res.send('hello');
+})
+
+accountRouter.route('/google/callback').get((req, res) => {
+  passport.authenticate('google', {
+    successRedirect: '../account',
+    failureRedirect: '../',
+  })
+})
+
+
 module.exports = accountRouter;

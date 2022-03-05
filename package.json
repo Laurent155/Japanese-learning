@@ -19,6 +19,7 @@
     "node-schedule": "^2.1.0",
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
+    "passport-google-oauth2": "^0.2.0",
     "passport-local": "^1.0.0"
   },
   "nodemonConfig": {
