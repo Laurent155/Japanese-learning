@@ -18,6 +18,7 @@ accountRouter.route('/').get((req, res) => {
     } else {
         res.render('profile', {
           username: req.user.username,
+          userID: req.user._id
         });
     }
     
@@ -55,6 +56,7 @@ accountRouter.route('/signUp').post(async(req, res) => {
       if(existUser === 0){
         const results = await db.collection('userInfo').insertOne(user);
         return req.login(results.ops[0], () => {
+          console.log(req.user._id)
           return res.redirect('../account');
         });
       }

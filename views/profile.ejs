@@ -4,6 +4,13 @@
 	<title>Japanese Learning</title>
 	<link rel="stylesheet" href="/css/base.css">
 	<meta charset="UTF-8">
+	<style>
+		img{
+			height: 200px;
+			width: 200px;
+			border: 2px #BC002D;
+		}
+	</style>
 </head>
 <body>
 	<header>
@@ -23,5 +30,119 @@
 		</div>
 		
 	</main>
+	<img id="profileimg"> <label id="upprogress"></label> <br> <br>
+	<button id="selbtn" class="redButton">Select Image</button>
+	<button id="upbtn" class="redButton">Confirm Profile Picture</button>
+	<button id="downbtn" class="redButton">Refresh</button>
+
+	<script type="module">
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
+		import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
+
+		const firebaseConfig = {
+		  apiKey: "AIzaSyB8Me95Fgcft4s0BlLoRiftYTv9o80jjMc",
+		  authDomain: "japanese-learning-193b9.firebaseapp.com",
+		  projectId: "japanese-learning-193b9",
+		  storageBucket: "japanese-learning-193b9.appspot.com",
+		  messagingSenderId: "1057976094331",
+		  appId: "1:1057976094331:web:c7ed6581710ad4ec191cde",
+		  measurementId: "G-NVLEFXQFNF"
+		};
+	  
+		const app = initializeApp(firebaseConfig);
+		const analytics = getAnalytics(app);
+
+		import {getStorage, ref as sRef, uploadBytesResumable, getDownloadURL}
+		 from "https://www.gstatic.com/firebasejs/9.6.8/firebase-storage.js"
+
+
+		 // Variables and references
+		let files = [];
+		let reader = new FileReader();
+		let profileimg = document.getElementById('profileimg');
+		let proglab = document.getElementById('upprogress');
+		let SelBtn = document.getElementById('selbtn');
+		let UpBtn = document.getElementById('upbtn');
+		let DownBtn = document.getElementById('downbtn');
+
+		let input = document.createElement('input');
+		input.type = 'file';
+
+		input.onchange = e =>{
+			files = e.target.files;
+
+			reader.readAsDataURL(files[0]);
+		}
+
+		reader.onload = function(){
+			profileimg.src = reader.result;
+		}
+		
+		SelBtn.onclick = function(){
+			input.click();
+		}
+
+		// upload process
+
+		async function UploadProcess() {
+			
+			let ImgToUpload = files[0];
+			let ImgName = '<%= userID %>';
+			console.log(ImgName);
+			
+			const metaData = {
+				contentType: ImgToUpload.type
+			}
+
+			const storage = getStorage();
+
+			const storageRef = sRef(storage, 'Iamges/' + ImgName);
+
+			const UploadTask = uploadBytesResumable(storageRef, ImgToUpload, metaData);
+
+			UploadTask.on('state-changed', (snapshot)=>{
+				let progress = (snapshot.bytestTransferred / snapshot.totalBytes) * 100;
+				proglab.innerHTML = 'Upload' + progress + '%';
+			},
+			(error) =>{
+				alert('Error: image not uploaded"');
+			},
+			()=>{
+				getDownloadedURL(UploadTask.snapshot.ref).then((downloadURL)=>{
+					SaveURLtoRealtimeDB(downloadURL);
+				});
+			});
+
+		}
+
+
+		// Functions for real time database
+		
+		function SaveURLtoRealtimeDB(URL) {
+			let name = '<%= userID %>';
+
+			set(ref(realdb, 'ImagesLinks/' + name), {
+				ImageName: name,
+				ImgUrl: URL
+			});
+		}
+
+		function GetURLfromRealtimeDB(){
+			let name = '<%= userID %>';
+
+			let dbRef = ref(realdb);
+
+			get(child(dbRef, 'ImageLinks/'+name)).then((snapshot)=>{
+				if(snapshot.exists()){
+					myimg.src = snapshot.val().ImgUrl;
+				}
+			})
+		}
+
+		UpBtn.onclick = UploadProcess;
+		DownBtn.onclick = GetURLfromRealtimeDB;
+
+
+	</script>
 </body>
 </html>
