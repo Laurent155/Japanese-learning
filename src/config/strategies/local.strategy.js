@@ -1,39 +1,36 @@
-const passport = require('passport');
-const { Strategy } = require('passport-local');
-const { MongoClient } = require('mongodb');
-const dotenv = require('dotenv');
-
+const passport = require("passport");
+const { Strategy } = require("passport-local");
+const { MongoClient } = require("mongodb");
+const dotenv = require("dotenv");
 
 module.exports = function localStrategy() {
   passport.use(
     new Strategy(
       {
-        usernameField: 'username',
-        passwordField: 'password',
+        usernameField: "username",
+        passwordField: "password",
       },
-      (username, password, done) => {
+      async (username, password, done) => {
         const url = process.env.databaseURL;
-        const dbName = 'userInfo';
-        (async function validateUser() {
-          let client;
-          try {
-            client = await MongoClient.connect(url);
-            console.log('Connected to the mongo DB');
+        const dbName = "userInfo";
+        let client;
+        try {
+          client = await MongoClient.connect(url);
+          console.log("Connected to the mongo DB");
 
-            const db = client.db(dbName);
+          const db = client.db(dbName);
 
-            const user = await db.collection('userInfo').findOne({ username });
+          const user = await db.collection("userInfo").findOne({ username });
 
-            if (user && user.password === password) {
-              done(null, user);
-            } else {
-              done(null, false);
-            }
-          } catch (error) {
-            done(error, false);
+          if (user && user.password === password) {
+            done(null, user);
+          } else {
+            done(null, false);
           }
-          //client.close();
-        })();
+        } catch (error) {
+          done(error, false);
+        }
+        //client.close();
       }
     )
   );

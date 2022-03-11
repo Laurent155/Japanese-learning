@@ -116,7 +116,7 @@ function nextProblem() {
 			<p>It took you ${cycleNumber} try(s) to answer every problem.</p>
 			<button class="redButton" onclick="loadOptions(currentOptions)">Try another</button>
 		`;
-		fetch('http://localhost:4000/calendar', {method:'POST'}).then(()=>{
+		fetch('/calendar', {method:'POST'}).then(()=>{
 			console.log('thank you!');
 		})
     }
