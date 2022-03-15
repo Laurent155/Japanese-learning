@@ -4,12 +4,26 @@
 
 main {
     display: flex;
+    align-items: center;
 }
 
 .accountForm {
     flex: 1 0 auto;
 }
+
 .errorMessage {
     text-align: center;
     color: white;
+}
+
+.mainContainer {
+    flex: 0 1 auto;
+    margin: 30px auto;
+    display: initial;
+}
+
+#profileImg {
+    height: 200px;
+    width: 200px;
+    border: 2px #BC002D;
 }
