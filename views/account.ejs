@@ -15,7 +15,7 @@
 			<a href="/account">Account</a>
 		</nav>
 	</header>
-	<div class="errorMessage">
+	<div class="errorMessage" id="errorMsg">
 		<% if (errorMessage) { %>
 			<div>
 				<strong><%= errorMessage %></strong>
@@ -24,14 +24,16 @@
 		<% } %>
 	</div>
 	<main>
-		<form class="containerBox" name="signin" action="/account/signIn" method="post" autocomplete="off">
+		<form class="containerBox" name="signin" action="/account/signIn" method="post" autocomplete="off" id="signInBox">
 			<label for="signin_username">Username:</label> 
 			<input name="username" id="signin_username" class="inputBar"><br>
 			<label for="signin_password">Password:</label>
 			<input type="password" name="password" id="signin_password" class="inputBar"><br><br>
 			<input type="submit" value="Sign in" class="redButton">
+			<button type="button" class="redButton" id="signUpHere">New? Sign up here!</button>
 		</form>
-		<form class="containerBox" name="signup" action="/account/signUp" method="post" autocomplete="off">
+		
+		<form class="containerBox" name="signup" action="/account/signUp" method="post" autocomplete="off" id="signUpBox">
 			<label for="email">Email:</label> 
 			<input name="email" id="email" class="inputBar" type="email"><br>
 			<label for="signup_username">Username:</label> 
@@ -39,7 +41,40 @@
 			<label for="signup_password">Password:</label>
 			<input type="password" name="password" id="signup_password" class="inputBar"><br><br>
 			<input type="submit" value="Sign up" class="redButton">
+			<button type="button" class="redButton" id="backToSignIn">Already have an account? Sign in here!</button>
 		</form>
 	</main>
 </body>
 </html>
+
+<script>
+	let signInBox = document.getElementById('signInBox');
+	let signUpBox = document.getElementById('signUpBox');
+	let signUpHere = document.getElementById('signUpHere');
+	let backToSignIn = document.getElementById('backToSignIn');
+	let errorMsg = document.getElementById('errorMsg');
+
+	function switchBoxes(){
+		if(signInBox.style.display === 'block'){
+			signInBox.style.display = 'none';
+			signUpBox.style.display = 'block';
+			errorMsg.style.display = 'none';
+		}else{
+			signInBox.style.display = 'block';
+			signUpBox.style.display = 'none';
+			errorMsg.style.display = 'none';
+		}
+	}
+	function hideSignUp(){
+		if('<%= errorMessage%>'){
+			signInBox.style.display = 'none';
+			signUpBox.style.display = 'block';
+		}else{
+			signInBox.style.display = 'block';
+			signUpBox.style.display = 'none';
+		}
+	}
+	signUpHere.onclick = switchBoxes;
+	backToSignIn.onclick = switchBoxes;
+	window.onload = hideSignUp;
+</script>
