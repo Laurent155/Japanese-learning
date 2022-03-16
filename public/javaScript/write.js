@@ -156,9 +156,13 @@ var predict = function (input) {
             .array().then(function (scores) {
                 scores = scores[0];
                 console.log(scores);
-                predicted = scores
+                if(Math.max(...scores) > 0.90){
+                    predicted = scores
                     .indexOf(Math.max(...scores));
                 $('#drawnDisplay').html("Recognized: " + modelHiragana[predicted]);
+                }else{
+                    $('#drawnDisplay').html("Recognized (unclear): " + modelHiragana[predicted]);
+                }
                 checkWritingAnswer(modelHiragana[predicted]);
             });  
     } else {
