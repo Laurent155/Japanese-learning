@@ -3,6 +3,8 @@ const { MongoClient } = require("mongodb");
 const passport = require("passport");
 require("../config/passport.js")(passport);
 const accountRouter = express.Router();
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const calendar = [false, false, false, false, false, false, false];
 let bodyParser = require('body-parser');
@@ -18,7 +20,7 @@ accountRouter.route('/').get((req, res) => {
   } else {
     res.render('profile', {
       username: req.user.username,
-      userID: req.user._id //use nano id
+      userID: req.user._id, //use nano id
     });
   }
 
@@ -39,9 +41,7 @@ accountRouter.route('/img').get(async (req, res) => {
   if (!req.user) {
     res.send('There is no user!');        // res.resdirect vs res.render
   } else {
-    console.log("got itttt");
     const url = await retrieveProfileImage(req.user.username);
-    console.log(url);
     res.send({url});
   }
 })
@@ -68,9 +68,10 @@ accountRouter.route("/signUp").post(async (req, res) => {
     });
   }
   try {
-    //client = await MongoClient.connect(url);
+    let client = await MongoClient.connect(url);
     const db = client.db(dbName);
-    const user = { email, username, password, calendar };
+    const passwordCrypt = await bcrypt.hash(password, saltRounds);
+    const user = { email, username, password: passwordCrypt, calendar };
     const existUser = await db
       .collection("userInfo")
       .find({ username })

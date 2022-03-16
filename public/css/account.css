@@ -27,3 +27,8 @@ main {
     width: 200px;
     border: 2px #BC002D;
 }
+
+.center {
+    text-align: center;
+    margin: auto;
+}

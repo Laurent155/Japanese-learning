@@ -2,7 +2,7 @@ const passport = require("passport");
 const { Strategy } = require("passport-local");
 const { MongoClient } = require("mongodb");
 const dotenv = require("dotenv");
-
+const bcrypt = require('bcrypt');
 module.exports = function localStrategy() {
   passport.use(
     new Strategy(
@@ -22,7 +22,9 @@ module.exports = function localStrategy() {
 
           const user = await db.collection("userInfo").findOne({ username });
 
-          if (user && user.password === password) {
+          const validPassword = await bcrypt.compare(user.password, password);
+
+          if (user && validPassword) {
             done(null, user);
           } else {
             done(null, false);

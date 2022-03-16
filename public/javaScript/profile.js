@@ -1,5 +1,4 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyB8Me95Fgcft4s0BlLoRiftYTv9o80jjMc",
@@ -12,25 +11,20 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-import { getDatabase, ref, set, child, get, update, remove }
-    from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js"
 
 import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL }
     from "https://www.gstatic.com/firebasejs/9.6.8/firebase-storage.js"
 
 
 // Variables and references
-const realdb = getDatabase();
 let files = [];
 let reader = new FileReader();
-let profileimg = document.getElementById('profileimg');
+let profileimg = document.getElementById('profileImg');
 let proglab = document.getElementById('upprogress');
 let SelBtn = document.getElementById('selbtn');
 let UpBtn = document.getElementById('upbtn');
-
 let input = document.createElement('input');
+let signOutBtn = document.getElementById('signOutBtn');
 input.type = 'file';
 
 input.onchange = e => {
@@ -88,7 +82,6 @@ async function UploadProcess() {
 // Functions for real time database
 
 function SaveURLtoDB(URL) {
-    console.log(JSON.stringify(URL));
     const options = {
         method: 'POST',
         headers: {
@@ -97,7 +90,7 @@ function SaveURLtoDB(URL) {
         body: JSON.stringify({ URL: URL })
     }
     fetch('/account/img', options).then((response) => {
-        console.log(response);
+        localStorage.setItem('img', URL);
     }).catch((error) => {
         console.log(error);
     })
@@ -111,18 +104,31 @@ function GetURLfromDB() {
             'Content-Type': 'application/json'
         },
     }
+    const img = localStorage.getItem('img');
+    if(img){
+        profileimg.src = img;
+        return
+    }
+    console.log('fetch is called');
     fetch('/account/img').then(response => response.json()).then(data => {
         if (data.url) {
             SelBtn.innerHTML = 'Change profile picture';
             profileimg.src = data.url;
+            localStorage.setItem('img', data.url);
         }
     }).catch((error) => {
         console.log(error);
     });
 }
 
+function signOut(){
+    localStorage.removeItem('img');
+    location.href='/account/signOut';
+}
+
 UpBtn.onclick = UploadProcess;
 window.onload = GetURLfromDB;
+signOutBtn.onclick = signOut;
 // window.onload = function () {
 // 	GetURLfromDB;
 // };
