@@ -21,6 +21,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({ secret: 'cookie_secret', resave: true, saveUninitialized: true }));
 
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+
 require('./src/config/passport.js')(app);
 
 app.set('views', './views');
@@ -37,5 +42,9 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`listening to ${PORT}`);
 })
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+  });
 
 schedule.scheduleJob('0 0 * * *', () => {updateCalendar()});

@@ -25,6 +25,7 @@ let SelBtn = document.getElementById('selbtn');
 let UpBtn = document.getElementById('upbtn');
 let input = document.createElement('input');
 let signOutBtn = document.getElementById('signOutBtn');
+let ImgName;
 input.type = 'file';
 
 input.onchange = e => {
@@ -45,10 +46,14 @@ SelBtn.onclick = function () {
 // upload process
 
 async function UploadProcess() {
-
     let ImgToUpload = files[0];
-    let ImgName = '<%= userID %>';
-
+    await fetch('/account/userID')
+    .then(res => res.json())
+    .then(data => ImgName = data)
+    .catch((error) => {
+        console.log(error);
+    });
+    console.log(ImgName);
     const metaData = {
         contentType: ImgToUpload.type
     }
@@ -58,8 +63,6 @@ async function UploadProcess() {
     const storageRef = sRef(storage, 'Images/' + ImgName);
 
     const UploadTask = uploadBytesResumable(storageRef, ImgToUpload, metaData);
-
-    console.log(UploadTask);
 
     UploadTask.on('state-changed', (snapshot) => {
         // let progress = (snapshot.bytestTransferred / snapshot.totalBytes) * 100;
@@ -98,12 +101,6 @@ function SaveURLtoDB(URL) {
 
 function GetURLfromDB() {
     UpBtn.style.display = 'none';
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    }
     const img = localStorage.getItem('img');
     if(img){
         profileimg.src = img;
@@ -129,6 +126,3 @@ function signOut(){
 UpBtn.onclick = UploadProcess;
 window.onload = GetURLfromDB;
 signOutBtn.onclick = signOut;
-// window.onload = function () {
-// 	GetURLfromDB;
-// };

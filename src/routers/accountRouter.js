@@ -39,10 +39,21 @@ accountRouter.route('/img').post(async (req, res) => {
 
 accountRouter.route('/img').get(async (req, res) => {
   if (!req.user) {
-    res.send('There is no user!');        // res.resdirect vs res.render
+    res.send('There is no user!');
   } else {
     const url = await retrieveProfileImage(req.user.username);
     res.send({url});
+  }
+})
+
+
+accountRouter.route('/userID').get(async (req, res) => {
+  if (!req.user) {
+    res.send('There is no user!');
+  } else {
+    let userID = req.user._id;
+    console.log(userID);
+    res.send(JSON.stringify({userID: req.user._id}));
   }
 })
 
