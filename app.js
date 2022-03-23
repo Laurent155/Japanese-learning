@@ -7,9 +7,14 @@ const dotenv = require('dotenv');
 dotenv.config();
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const app = express();
+
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
-const app = express();
 const practiceRouter = require('./src/routers/practiceRouter');
 const { calendarRouter, updateCalendar } = require('./src/routers/calendarRouter'); 
 //it's because I've exported an object { ... }, so now only want one function in it, so want the {} around authRouter.
@@ -20,11 +25,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({ secret: 'cookie_secret', resave: true, saveUninitialized: true }));
-
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
 
 require('./src/config/passport.js')(app);
 
@@ -39,12 +39,24 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`listening to ${PORT}`);
 })
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
-  });
+const users = {}
 
+io.on('connection', socket => {
+  console.log('user connected');
+  socket.on('new-user', name => {
+    users[socket.id] = name
+    socket.broadcast.emit('user-connected', name)
+  })
+  socket.on('send-chat-message', message => {
+    socket.broadcast.emit('chat-message', { message: message, name: users[socket.id] })
+  })
+  socket.on('disconnect', () => {
+    socket.broadcast.emit('user-disconnected', users[socket.id])
+    delete users[socket.id]
+  })
+})
 schedule.scheduleJob('0 0 * * *', () => {updateCalendar()});

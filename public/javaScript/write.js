@@ -70,8 +70,8 @@ const modelHiragana = ["あ",
 "を",
 "ん"]
 
-let paintCanvas = document.getElementById( 'tempCanvas' );
-let context = paintCanvas.getContext( '2d' );
+let paintCanvas2 = document.getElementById( 'tempCanvas' );
+let context2 = paintCanvas2.getContext( '2d' );
 
 let x = 0, y = 0;
 let isMouseDown = false;
@@ -121,9 +121,9 @@ function resetCanvas() {
         var img = new Image();
         img.src = paintCanvas.toDataURL('image/png');
         img.onload = function () {
-            context.drawImage(img, 0, 0, 48, 48);
-            data = context.getImageData(0, 0, 48, 48).data;
-            context.clearRect(0, 0, 48, 48);
+            context2.drawImage(img, 0, 0, 48, 48);
+            data = context2.getImageData(0, 0, 48, 48).data;
+            context2.clearRect(0, 0, 48, 48);
             // context.fillStyle = 'white';
             // context.fillRect(0, 0, 48, 48);
             console.log(data);

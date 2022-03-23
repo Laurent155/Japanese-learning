@@ -7,9 +7,6 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const calendar = [false, false, false, false, false, false, false];
-let bodyParser = require('body-parser');
-accountRouter.use(bodyParser.json());
-accountRouter.use(bodyParser.urlencoded({ extended: true }));
 const url = process.env.databaseURL;
 const client = new MongoClient(url);
 accountRouter.route('/').get((req, res) => {
@@ -52,11 +49,17 @@ accountRouter.route('/userID').get(async (req, res) => {
     res.send('There is no user!');
   } else {
     let userID = req.user._id;
-    console.log(userID);
     res.send(JSON.stringify({userID: req.user._id}));
   }
 })
 
+accountRouter.route('/username').get(async (req, res) => {
+  if (!req.user) {
+    res.send('There is no user!');
+  } else {
+    res.send(JSON.stringify({username: req.user.username}));
+  }
+})
 
 accountRouter.route("/signUp").post(async (req, res) => {
   const { email, username, password } = req.body;

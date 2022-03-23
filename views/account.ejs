@@ -25,21 +25,21 @@
 	</div>
 	<main>
 		<form class="containerBox" name="signin" action="/account/signIn" method="post" autocomplete="off" id="signInBox">
-			<label for="signin_username">Username:</label> 
-			<input name="username" id="signin_username" class="inputBar"><br>
-			<label for="signin_password">Password:</label>
-			<input type="password" name="password" id="signin_password" class="inputBar"><br><br>
+			
+			<input name="username" id="signin_username" class="inputBar" placeholder="Username:"><br>
+			
+			<input type="password" name="password" id="signin_password" class="inputBar" placeholder="Password:"><br><br>
 			<input type="submit" value="Sign in" class="redButton">
 			<button type="button" class="redButton" id="signUpHere">New? Sign up here!</button>
 		</form>
 		
 		<form class="containerBox" name="signup" action="/account/signUp" method="post" autocomplete="off" id="signUpBox">
-			<label for="email">Email:</label> 
-			<input name="email" id="email" class="inputBar" type="email"><br>
-			<label for="signup_username">Username:</label> 
-			<input name="username" id="signup_username" class="inputBar"><br>
-			<label for="signup_password">Password:</label>
-			<input type="password" name="password" id="signup_password" class="inputBar"><br><br>
+			
+			<input name="email" id="email" class="inputBar" type="email" placeholder="Email:"><br>
+			
+			<input name="username" id="signup_username" class="inputBar" placeholder="Username:"><br>
+			
+			<input type="password" name="password" id="signup_password" class="inputBar" placeholder="Password:"><br><br>
 			<input type="submit" value="Sign up" class="redButton">
 			<button type="button" class="redButton" id="backToSignIn">Already have an account? Sign in here!</button>
 		</form>

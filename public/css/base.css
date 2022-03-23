@@ -80,3 +80,16 @@ nav a {
     border: 1px solid #BC002D;
     box-shadow: 0 0 5px #BC002D;
 }
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #000000;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #000000;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: #000000;
+  }

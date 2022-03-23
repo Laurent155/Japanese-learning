@@ -1,46 +1,60 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Japanese Learning</title>
-		<link rel="stylesheet" href="/css/base.css">
-		<link rel="stylesheet" href="/css/account.css">
-		<meta charset="UTF-8">
-	</head>
-	<body>
-		<header>
-			<nav>
-				<a id="HomeButton" href="/">Japanese Learning</a>
-				<a href="/practice">Practice</a>
-				<a href="/calendar">Calendar</a>
-				<a href="/account">Account</a>
-			</nav>
-		</header>
-		<main>
-			<div id="profileContainer" class="mainContainer">
-				<div class="containerBox">
-					<h1>Hello <%= username %>
-					</h1>
-					<button class="redButton" id="signOutBtn">Sign out</button>
-				</div>
+
+<head>
+	<title>Japanese Learning</title>
+	<link rel="stylesheet" href="/css/base.css">
+	<link rel="stylesheet" href="/css/account.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<meta charset="UTF-8">
+	<script defer src="/socket.io/socket.io.js"></script>
+	<script defer async src="/javaScript/chat.js"></script>
+</head>
+
+<body>
+	<header>
+		<nav>
+			<a id="HomeButton" href="/">Japanese Learning</a>
+			<a href="/practice">Practice</a>
+			<a href="/calendar">Calendar</a>
+			<a href="/account">Account</a>
+		</nav>
+	</header>
+	<main>
+		<div id="profileContainer" class="mainContainer">
+			<div class="containerBox">
+				<h1>Hello <%= username %>
+				</h1>
+				<button class="redButton" id="signOutBtn">Sign out</button>
 			</div>
-			<div class="mainContainer">
-				<div class="containerBox">
-					<img id="profileImg"> <label id="upprogress"></label> <br> <br>
-					<button id="selbtn" class="redButton">Upload profile picture</button>
-					<button id="upbtn" class="redButton center">Confirm</button>
-				</div>
-				<div class="containerBox">
-					<button id="friendButton" class="redButton">Friends</button>
-					<button id="chatButton" class="redButton">Chat</button>
-				</div>
+		</div>
+		<div class="mainContainer">
+			<div class="containerBox">
+				<img id="profileImg"> <label id="upprogress"></label> <br> <br>
+				<button id="selbtn" class="redButton">Upload profile picture</button>
+				<button id="upbtn" class="redButton center">Confirm</button>
 			</div>
 			<div class="containerBox">
-				<ul id="messages"></ul>
-				<form id="form" action="">
-			  		<input id="input" autocomplete="off" /><button>Send</button>
-				</form>
+				<button id="friendButton" class="redButton">Friends</button>
+				<button id="chatButton" class="redButton">Chat</button>
 			</div>
-		</main>
-		<script type="module" src="javaScript/profile.js"></script>
-	</body>
+		</div>
+		<div class="containerBox">
+			<div id="message-container"></div>
+			<form id="send-container">
+				<input type="text" id="message-input">
+				<button type="submit" id="send-button">Send</button>
+			</form>
+		</div>
+		<div class="search-container">
+			<form action="/">
+				<input type="text" placeholder="Search.." name="search" autocomplete="off">
+				<button type="submit"><i class="fa fa-search"></i></button>
+			</form>
+		</div>
+
+	</main>
+	<script type="module" src="javaScript/profile.js"></script>
+</body>
+
 </html>
