@@ -49,7 +49,7 @@ async function UploadProcess() {
     let ImgToUpload = files[0];
     await fetch('/account/userID')
     .then(res => res.json())
-    .then(data => ImgName = data)
+    .then(data => ImgName = data.userID)
     .catch((error) => {
         console.log(error);
     });
