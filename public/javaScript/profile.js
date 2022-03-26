@@ -25,6 +25,7 @@ let SelBtn = document.getElementById('selbtn');
 let UpBtn = document.getElementById('upbtn');
 let input = document.createElement('input');
 let signOutBtn = document.getElementById('signOutBtn');
+let searchName = document.getElementById('searchName');
 let ImgName;
 input.type = 'file';
 
@@ -118,6 +119,30 @@ function GetURLfromDB() {
     });
 }
 
+
+function searchNameInDB() {
+    let name = document.getElementById('username').value;
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: name })
+    }
+    fetch('/account/searchName', options).then(response => response.json()).then(data => {
+        const users = data.users;
+        console.log(users);
+        if (users.length > 0) {
+            console.log('User exists!');
+        } else{
+            console.log('User not found!');
+        }
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
+
 function signOut(){
     localStorage.removeItem('img');
     location.href='/account/signOut';
@@ -125,4 +150,5 @@ function signOut(){
 
 UpBtn.onclick = UploadProcess;
 window.onload = GetURLfromDB;
+searchName.onclick = searchNameInDB;
 signOutBtn.onclick = signOut;

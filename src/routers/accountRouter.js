@@ -39,7 +39,7 @@ accountRouter.route('/img').get(async (req, res) => {
     res.send('There is no user!');
   } else {
     const url = await retrieveProfileImage(req.user.username);
-    res.send({url});
+    res.send({ url });
   }
 })
 
@@ -48,8 +48,7 @@ accountRouter.route('/userID').get(async (req, res) => {
   if (!req.user) {
     res.send('There is no user!');
   } else {
-    let userID = req.user._id;
-    res.send(JSON.stringify({userID: req.user._id}));
+    res.send(JSON.stringify({ userID: req.user._id }));
   }
 })
 
@@ -57,9 +56,23 @@ accountRouter.route('/username').get(async (req, res) => {
   if (!req.user) {
     res.send('There is no user!');
   } else {
-    res.send(JSON.stringify({username: req.user.username}));
+    res.send(JSON.stringify({ username: req.user.username }));
   }
 })
+
+accountRouter.route('/searchName').post(async (req, res) => {
+  if (!req.user) {
+    res.send('There is no user!');
+  } else {
+    let username= req.body.name;
+    console.log(username);
+    console.log(req.body);
+    const userExist = await findUser(username);
+    res.send(JSON.stringify({ users: userExist }));
+  }
+})
+
+
 
 accountRouter.route("/signUp").post(async (req, res) => {
   const { email, username, password } = req.body;
@@ -75,6 +88,14 @@ accountRouter.route("/signUp").post(async (req, res) => {
       errorMessage: "Invalid email address",
     });
   }
+
+  if (username.length < 3){
+    return res.render("account", {
+      errorMessage:
+        "Username must be at least 3 characters long",
+    });
+  }
+
   if (!password.match(password_pattern)) {
     return res.render("account", {
       errorMessage:
@@ -175,5 +196,24 @@ async function retrieveProfileImage(learnerName) {
     console.log(error);
   }
 }
+
+async function findUser(username) {
+  try {
+    await client.connect();
+    const database = client.db("userInfo");
+    const userInfo = database.collection("userInfo");
+    const filter = {username: new RegExp('.*' + username + '.*', "i")};
+    const result = await userInfo.find(filter).toArray();
+    const filterResult = result.map((user)=>{
+      return {username: user.username, profileimg: user.profileimg, id: user._id}
+    })
+    console.log(filterResult);
+    return filterResult;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
 
 module.exports = accountRouter;

@@ -8,7 +8,6 @@ fetch('/account/username')
 .then(res => res.json())
 .then(data => {
   name = data.username;
-  console.log(data);
   appendMessage('You joined')
   socket.emit('new-user', name)
 })

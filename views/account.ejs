@@ -25,16 +25,18 @@
 	</div>
 	<main>
 		<form class="containerBox" name="signin" action="/account/signIn" method="post" autocomplete="off" id="signInBox">
-			
+			<br>
 			<input name="username" id="signin_username" class="inputBar" placeholder="Username:"><br>
 			
 			<input type="password" name="password" id="signin_password" class="inputBar" placeholder="Password:"><br><br>
 			<input type="submit" value="Sign in" class="redButton">
-			<button type="button" class="redButton" id="signUpHere">New? Sign up here!</button>
+			<button type="button" class="redButton" id="signUpHere">New? Sign up here!</button><br><br>
+			<a href="/account/google"><img id="google_logo" src="images/google_logo.png" class="google_logo"></a><br>
+			<img id="facebook_logo" src="images/facebook_logo.png" class="facebook_logo">
 		</form>
 		
 		<form class="containerBox" name="signup" action="/account/signUp" method="post" autocomplete="off" id="signUpBox">
-			
+			<br>
 			<input name="email" id="email" class="inputBar" type="email" placeholder="Email:"><br>
 			
 			<input name="username" id="signup_username" class="inputBar" placeholder="Username:"><br>

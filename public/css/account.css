@@ -32,3 +32,13 @@ main {
     text-align: center;
     margin: auto;
 }
+
+.google_logo {
+    width: auto;
+    height: 50px;
+}
+
+.facebook_logo {
+    width: auto;
+    height: 50px;
+}
