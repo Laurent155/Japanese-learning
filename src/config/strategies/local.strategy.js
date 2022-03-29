@@ -22,8 +22,10 @@ module.exports = function localStrategy() {
 
           const user = await db.collection("userInfo").findOne({ username });
 
+          let validPassword = false;
+
           if (user) {
-            const validPassword = await bcrypt.compare(password, user.password);
+            validPassword = await bcrypt.compare(password, user.password);
           }
 
           if (user && validPassword) {

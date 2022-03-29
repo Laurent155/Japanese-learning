@@ -27,6 +27,8 @@ let input = document.createElement('input');
 let signOutBtn = document.getElementById('signOutBtn');
 let searchName = document.getElementById('searchName');
 let ImgName;
+const ul = document.getElementById('searchResult');
+
 input.type = 'file';
 
 input.onchange = e => {
@@ -49,11 +51,11 @@ SelBtn.onclick = function () {
 async function UploadProcess() {
     let ImgToUpload = files[0];
     await fetch('/account/userID')
-    .then(res => res.json())
-    .then(data => ImgName = data.userID)
-    .catch((error) => {
-        console.log(error);
-    });
+        .then(res => res.json())
+        .then(data => ImgName = data.userID)
+        .catch((error) => {
+            console.log(error);
+        });
     console.log(ImgName);
     const metaData = {
         contentType: ImgToUpload.type
@@ -103,7 +105,7 @@ function SaveURLtoDB(URL) {
 function GetURLfromDB() {
     UpBtn.style.display = 'none';
     const img = localStorage.getItem('img');
-    if(img){
+    if (img) {
         profileimg.src = img;
         return
     }
@@ -131,10 +133,20 @@ function searchNameInDB() {
     }
     fetch('/account/searchName', options).then(response => response.json()).then(data => {
         const users = data.users;
-        console.log(users);
+        // console.log(users);
         if (users.length > 0) {
-            console.log('User exists!');
-        } else{
+            users.forEach(user => {
+                const li = document.createElement('li');
+                li.innerHTML = user.username;
+                const btn = document.createElement('button');
+                btn.innerHTML = 'chat';
+                btn.addEventListener('click', () => {
+                    chatWith(user.id);
+                })
+                li.appendChild(btn);
+                ul.appendChild(li);
+            });
+        } else {
             console.log('User not found!');
         }
     }).catch((error) => {
@@ -143,9 +155,26 @@ function searchNameInDB() {
 }
 
 
-function signOut(){
+async function chatWith(id){
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user2ID: id })
+    }
+    const roomID = await fetch('/room', options).then(response => response.json());
+    console.log(roomID);
+    socket.on('connection', (roomSocket)=>{
+        roomSocket.join(roomID._id);
+    })
+}
+
+
+
+function signOut() {
     localStorage.removeItem('img');
-    location.href='/account/signOut';
+    location.href = '/account/signOut';
 }
 
 UpBtn.onclick = UploadProcess;
