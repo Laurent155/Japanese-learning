@@ -20,6 +20,7 @@ const { calendarRouter, updateCalendar } = require('./src/routers/calendarRouter
 //it's because I've exported an object { ... }, so now only want one function in it, so want the {} around authRouter.
 const accountRouter = require('./src/routers/accountRouter');
 const roomRouter = require('./src/routers/roomRouter');
+const friendRouter = require('./src/routers/friendRouter');
 app.use(express.static(path.join(__dirname, '/public/')));
 
 app.use(express.json());
@@ -36,6 +37,7 @@ app.use('/practice', practiceRouter);
 app.use('/calendar', calendarRouter);
 app.use('/account', accountRouter);
 app.use('/room', roomRouter);
+app.use('/friend', friendRouter);
 
 app.get('/', (req, res) => {
     res.render('index');

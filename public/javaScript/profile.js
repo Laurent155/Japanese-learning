@@ -26,8 +26,11 @@ let UpBtn = document.getElementById('upbtn');
 let input = document.createElement('input');
 let signOutBtn = document.getElementById('signOutBtn');
 let searchName = document.getElementById('searchName');
+let friendBtn = document.getElementById('friendButton');
 let ImgName;
+let friendList;
 const ul = document.getElementById('searchResult');
+const ul2 = document.getElementById('friendList');
 
 input.type = 'file';
 
@@ -56,7 +59,7 @@ async function UploadProcess() {
         .catch((error) => {
             console.log(error);
         });
-    console.log(ImgName);
+    // console.log(ImgName);
     const metaData = {
         contentType: ImgToUpload.type
     }
@@ -139,9 +142,10 @@ function searchNameInDB() {
                 const li = document.createElement('li');
                 li.innerHTML = user.username;
                 const btn = document.createElement('button');
-                btn.innerHTML = 'chat';
+
+                btn.innerHTML = 'Add friend';
                 btn.addEventListener('click', () => {
-                    chatWith(user.id);
+                    addFriend(user.id);
                 })
                 li.appendChild(btn);
                 ul.appendChild(li);
@@ -155,7 +159,25 @@ function searchNameInDB() {
 }
 
 
-async function chatWith(id){
+async function addFriend(id) {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user2ID: id })
+    }
+    try {
+        const friend = await fetch('/friend', options).then(response => response.json());
+        console.log(friend);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+async function chatWith(id) {
     const options = {
         method: 'POST',
         headers: {
@@ -165,9 +187,34 @@ async function chatWith(id){
     }
     const roomID = await fetch('/room', options).then(response => response.json());
     console.log(roomID);
-    socket.on('connection', (roomSocket)=>{
+    socket.on('connection', (roomSocket) => {
         roomSocket.join(roomID._id);
     })
+}
+
+
+async function getFriendInDB() {
+    await fetch('/friend')
+        .then(res => res.json())
+        .then(data => friendList = data.friends)
+        .catch((error) => {
+            console.log(error);
+        });
+    if (friendList.length > 0) {
+        friendList.forEach(friend => {
+            const li = document.createElement('li');
+            li.innerHTML = friend.username;
+            const btn = document.createElement('button');
+            btn.innerHTML = 'chat';
+            btn.addEventListener('click', () => {
+                chatWith(friend.id);
+            })
+            li.appendChild(btn);
+            ul.appendChild(li);
+        });
+    } else {
+        console.log('No friend found!');
+    }
 }
 
 
@@ -180,4 +227,5 @@ function signOut() {
 UpBtn.onclick = UploadProcess;
 window.onload = GetURLfromDB;
 searchName.onclick = searchNameInDB;
+friendBtn.onclick = getFriendInDB;
 signOutBtn.onclick = signOut;
