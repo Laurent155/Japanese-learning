@@ -1,78 +1,72 @@
 const express = require("express");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 const passport = require("passport");
 require("../config/passport.js")(passport);
 const accountRouter = express.Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const calendar = [false, false, false, false, false, false, false];
 const url = process.env.databaseURL;
 const client = new MongoClient(url);
-accountRouter.route('/').get((req, res) => {
+accountRouter.route("/").get((req, res) => {
   if (!req.user) {
-    res.render('account', {
-      errorMessage: ''
+    res.render("account", {
+      errorMessage: "",
     });
   } else {
-    res.render('profile', {
+    res.render("profile", {
       username: req.user.username,
       userID: req.user._id, //use nano id
     });
   }
+});
 
-})
-
-
-accountRouter.route('/img').post(async (req, res) => {
+accountRouter.route("/img").post(async (req, res) => {
   if (!req.user) {
-    res.send('There is no user!');        // res.resdirect vs res.render
+    res.send("There is no user!"); // res.resdirect vs res.render
   } else {
     await updateProfileImage(req.user.username, req.body.URL);
-    res.send('received');
+    res.send("received");
   }
-})
+});
 
-
-accountRouter.route('/img').get(async (req, res) => {
+accountRouter.route("/img").get(async (req, res) => {
   if (!req.user) {
-    res.send('There is no user!');
+    res.send("There is no user!");
   } else {
     const url = await retrieveProfileImage(req.user.username);
     res.send({ url });
   }
-})
+});
 
-
-accountRouter.route('/userID').get(async (req, res) => {
+accountRouter.route("/userID").get(async (req, res) => {
   if (!req.user) {
-    res.send('There is no user!');
+    res.send("There is no user!");
   } else {
     res.send(JSON.stringify({ userID: req.user._id }));
   }
-})
+});
 
-accountRouter.route('/username').get(async (req, res) => {
+accountRouter.route("/username").get(async (req, res) => {
   if (!req.user) {
-    res.send('There is no user!');
+    res.send("There is no user!");
   } else {
     res.send(JSON.stringify({ username: req.user.username }));
   }
-})
+});
 
-accountRouter.route('/searchName').post(async (req, res) => {
+accountRouter.route("/searchName").post(async (req, res) => {
   if (!req.user) {
-    res.send('There is no user!');
+    res.send("There is no user!");
   } else {
-    let username= req.body.name;
+    let username = req.body.name;
     console.log(username);
     console.log(req.body);
-    const userExist = await findUser(username);
+    const userExist = await findUser(username, req.user._id);
     res.send(JSON.stringify({ users: userExist }));
   }
-})
-
-
+});
 
 accountRouter.route("/signUp").post(async (req, res) => {
   const { email, username, password } = req.body;
@@ -89,10 +83,9 @@ accountRouter.route("/signUp").post(async (req, res) => {
     });
   }
 
-  if (username.length < 3){
+  if (username.length < 3) {
     return res.render("account", {
-      errorMessage:
-        "Username must be at least 3 characters long",
+      errorMessage: "Username must be at least 3 characters long",
     });
   }
 
@@ -163,7 +156,6 @@ accountRouter.route("/google/callback").get(
   })
 );
 
-
 async function updateProfileImage(learnerName, url) {
   try {
     await client.connect();
@@ -174,11 +166,11 @@ async function updateProfileImage(learnerName, url) {
     const options = { upsert: false };
     const addimg = {
       $set: {
-        profileimg: url
+        profileimg: url,
       },
     };
     const result = await userInfo.updateOne(filter, addimg, options);
-    return result
+    return result;
   } catch (error) {
     console.log(error);
   }
@@ -197,23 +189,34 @@ async function retrieveProfileImage(learnerName) {
   }
 }
 
-async function findUser(username) {
+async function findUser(username, user_id) {
   try {
     await client.connect();
     const database = client.db("userInfo");
     const userInfo = database.collection("userInfo");
-    const filter = {username: new RegExp('.*' + username + '.*', "i")};
+    const filter = {
+      $and: [
+        {
+          username: new RegExp(".*" + username + ".*", "i"),
+        },
+        {
+          _id: { $nin: [ObjectId(user_id)] },
+        },
+      ],
+    };
     const result = await userInfo.find(filter).toArray();
-    const filterResult = result.map((user)=>{
-      return {username: user.username, profileimg: user.profileimg, id: user._id}
-    })
+    const filterResult = result.map((user) => {
+      return {
+        username: user.username,
+        profileimg: user.profileimg,
+        id: user._id,
+      };
+    });
     console.log(filterResult);
     return filterResult;
   } catch (error) {
     console.error(error);
   }
 }
-
-
 
 module.exports = accountRouter;
