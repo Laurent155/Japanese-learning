@@ -21,7 +21,7 @@ friendRouter.route("/").get(async (req, res) => {
     res.send("There is no user!");
   } else {
     const friends = await findFriends(req.user._id);
-    console.log(friends);
+    // console.log(friends);
     res.send({ friends });
   }
   // const { user1, user2 } = req.body;
@@ -39,7 +39,7 @@ async function findFriends(userID) {
     const result = await userInfo.findOne(query);
     let friends = [];
     if (result) {
-      console.log(result);
+      // console.log(result);
       let friendsID = result.friends;
 
       for (let friendID of friendsID) {
@@ -59,8 +59,8 @@ async function addFriend(user1, user2) {
     await client.connect();
     const database = client.db("userInfo");
     const userInfo = database.collection("userInfo");
-    console.log(user1);
-    console.log(user2);
+    // console.log(user1);
+    // console.log(user2);
     let filter = { _id: ObjectId(user1) };
     const options = { upsert: true };
     let newFriend = {

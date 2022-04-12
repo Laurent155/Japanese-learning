@@ -203,6 +203,9 @@ async function chatWith(id) {
   socket.on("connection", (roomSocket) => {
     roomSocket.join(roomID._id);
   });
+  let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+width=0,height=0,left=-1000,top=-1000`;
+  window.open("/room/chat?roomID=" + roomID._id, "", params);
 }
 
 async function getFriendInDB() {
@@ -220,7 +223,7 @@ async function getFriendInDB() {
       const btn = document.createElement("button");
       btn.innerHTML = "chat";
       btn.addEventListener("click", () => {
-        chatWith(friend.id);
+        chatWith(friend._id);
       });
       li.appendChild(btn);
       ul.appendChild(li);

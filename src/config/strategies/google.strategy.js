@@ -15,8 +15,8 @@ passport.use(
     },
     async (request, accessToken, refreshToken, profile, done) => {
       const email = profile.email;
-      console.log('profile here')
-      console.log(profile);
+      // console.log('profile here')
+      // console.log(profile);
       // here we should use the email because google doesn't provide the username
       // const username = profile.given_name;
       const username = profile.email;
