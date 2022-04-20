@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 const passport = require("passport");
 require("../config/passport.js")(passport);
 const roomRouter = express.Router();
@@ -32,6 +32,40 @@ roomRouter.route("/chat").get(async (req, res) => {
     });
   }
 });
+
+
+roomRouter.route("/chatHistory").post(async (req, res) => {
+  const user2ID = req.body.user2ID;
+  if (!req.user) {
+    res.send("There is no user!");
+  } else {
+    await appendToChatHistory(req.user._id, req.body.message, req.body.room);
+    res.send("hello");
+  }
+})
+
+
+async function appendToChatHistory(id, message, room) {
+  try{
+    await client.connect();
+    const database = client.db("userInfo");
+    const roomInfo = database.collection("rooms");
+
+    let filter = { _id: room };
+    const options = { upsert: true };
+    let newMessage = {
+      $push: {
+        chatHistory: {id: new ObjectId(id), message: message, date: new Date()},
+      },
+    };
+    
+    let result = await roomInfo.updateOne(filter, newMessage);
+    
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 async function findOrCreateRoom(user1, user2) {
   try {
