@@ -52,7 +52,7 @@ accountRouter.route("/username").get(async (req, res) => {
   if (!req.user) {
     res.send("There is no user!");
   } else {
-    res.send(JSON.stringify({ username: req.user.username, id: req.user._id }));
+    res.send(JSON.stringify({ username: req.user.username }));
   }
 });
 
@@ -64,7 +64,7 @@ accountRouter.route("/searchName").post(async (req, res) => {
     // console.log(username);
     // console.log(req.body);
     const userExist = await findUser(username, req.user._id);
-    res.send(JSON.stringify({ users: userExist, friendList: req.user.friends }));
+    res.send(JSON.stringify({ users: userExist }));
   }
 });
 

@@ -4,20 +4,17 @@ const messageForm = document.getElementById("send-container");
 const messageInput = document.getElementById("message-input");
 const sendMsgBtn = document.getElementById("send-button");
 let name;
-let id;
 const params = new URLSearchParams(window.location.search);
 const room = params.get("roomID");
-// console.log(room);
+console.log(room);
 
 socket.emit("room", room);
 
 fetch("/account/username")
   .then((res) => res.json())
   .then((data) => {
-    console.log(data);
     name = data.username;
-    id = data.id;
-    appendMessage("You joined", false);
+    appendMessage("You joined");
     socket.emit("new-user-private", room, name);
   })
   .catch((error) => {
@@ -41,7 +38,6 @@ sendMsgBtn.addEventListener("click", (e) => {
   const message = messageInput.value;
   appendMessage(`You: ${message}`);
   socket.emit("private-message", room, message);
-  saveMessage(message);
   messageInput.value = "";
 });
 
@@ -49,18 +45,4 @@ function appendMessage(message) {
   const messageElement = document.createElement("div");
   messageElement.innerText = message;
   messageContainer.append(messageElement);
-}
-
-function saveMessage(message) {
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ message: message, room: room}),
-  };
-  fetch("/room/chatHistory", options)
-    .catch((error) => {
-      console.log(error);
-    });
 }

@@ -146,7 +146,6 @@ function searchNameInDB() {
     .then((response) => response.json())
     .then((data) => {
       const users = data.users;
-      const friendList = data.friendList
       // console.log(users);
       if (users.length > 0) {
         ul.innerHTML = "";
@@ -154,16 +153,11 @@ function searchNameInDB() {
           const li = document.createElement("li");
           li.innerHTML = user.username;
           const btn = document.createElement("button");
-          console.log(friendList)
-          if (!friendList.includes(user.id)){
-            btn.innerHTML = "Add friend";
-            btn.addEventListener("click", () => {
+
+          btn.innerHTML = "Add friend";
+          btn.addEventListener("click", () => {
             addFriend(user.id);
           });
-          } else {
-            btn.innerHTML = "Already friends";
-          }
-          
           li.appendChild(btn);
           ul.appendChild(li);
         });
